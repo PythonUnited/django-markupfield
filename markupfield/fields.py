@@ -129,6 +129,9 @@ class MarkupField(models.TextField):
 
     def pre_save(self, model_instance, add):
         value = super(MarkupField, self).pre_save(model_instance, add)
+        # value is empty upon empty creation of a model. In that case return
+        if not value:
+            return
         if value.markup_type not in self.markup_choices_list:
             raise ValueError('Invalid markup type (%s), allowed values: %s' %
                              (value.markup_type,
